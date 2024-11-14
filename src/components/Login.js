@@ -38,7 +38,7 @@ const Login = () => {
         <p className="text-gray-400 mt-4 mb-20 ">
           {isRegistered ? "New to Netflix? " : "Already registered "}
           <span
-            className="text-white font-semibold hover:underline"
+            className="text-white font-semibold hover:underline cursor-pointer"
             onClick={() => {
               setIsRegistered(!isRegistered);
             }}

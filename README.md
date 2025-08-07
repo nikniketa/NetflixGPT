@@ -7,9 +7,11 @@
  - Sign Up form
  - Form Validation
  - useRef hook
+ - Firebase setup
+ - Deploying our app to production
 
  # Features
-  - Login/Sign Up
+  - Login/Sign Up(firebase deploy)
   - redirect to browse page
   - Browse
     - Header

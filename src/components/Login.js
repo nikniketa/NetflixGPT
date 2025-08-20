@@ -4,9 +4,12 @@ import checkFormValidation from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { BANNER_LOGIN, PHOTO_URL } from "../utils/constants";
 
 const Login = () => {
   const [isRegistered, setIsRegistered] = useState(true);
@@ -14,7 +17,7 @@ const Login = () => {
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmitForm = () => {
     const emailValue = email.current.value;
     const passwordValue = password.current.value;
@@ -30,8 +33,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -43,8 +44,25 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          updateProfile(auth.currentUser, {
+            displayName: name.current.value,
+            photoURL: PHOTO_URL,
+          })
+            .then((auth) => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           console.log(user);
-          navigate("/browser");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -60,7 +78,7 @@ const Login = () => {
       <img
         alt="netflix-banner"
         className="bg-no-repeat absolute top-0 h-full w-full z-[1]"
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/51c1d7f7-3179-4a55-93d9-704722898999/be90e543-c951-40d0-9ef5-e067f3e33d16/IN-en-20240610-popsignuptwoweeks-perspective_alpha_website_small.jpg"
+        src={BANNER_LOGIN}
       />
 
       <Header />

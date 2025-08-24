@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 import { LOGO } from "../utils/constants";
+import { toggleGPTView } from "../utils/gptSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   useEffect(() => {
+    handleGPTView();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
@@ -31,6 +33,9 @@ const Header = () => {
 
     return () => unsubscribe();
   }, []);
+  const handleGPTView = () => {
+    dispatch(toggleGPTView());
+  };
   const onSignOutHandler = () => {
     signOut(auth)
       .then(() => {})
@@ -39,10 +44,16 @@ const Header = () => {
       });
   };
   return (
-    <div className="w-10/12 m-auto z-10 relative">
+    <div className="w-full px-32 z-10 fixed">
       <img className="w-52 shadow-black float-left" src={LOGO} alt="logo" />
       {user && (
         <div className=" flex float-right mt-5">
+          <button
+            className="bg-green-700 text-white p-2 mr-2 rounded"
+            onClick={handleGPTView}
+          >
+            GPT Search
+          </button>
           <img
             alt="netflix-profile"
             src={user.photoURL}

@@ -9,6 +9,8 @@ import {
   addTopRatedMovie,
   addUpcomingMovies,
 } from "../utils/movieSlice";
+import GPTSearch from "./GPTSearch";
+import { useSelector } from "react-redux";
 
 const Browse = () => {
   useNowMoviePlaying(
@@ -31,12 +33,21 @@ const Browse = () => {
     "https://api.themoviedb.org/3/movie/top_rated",
     addTopRatedMovie
   );
+  const gptscreen = useSelector((store) => store.gpt.gptView);
+  console.log(gptscreen);
+
   return (
-    <div>
+    <>
       <Header />
-      <MainContainer />
-      <SecondaryContainer />
-    </div>
+      {gptscreen ? (
+        <GPTSearch />
+      ) : (
+        <>
+          <MainContainer />
+          <SecondaryContainer />
+        </>
+      )}
+    </>
   );
 };
 

@@ -17,3 +17,9 @@ export const MOVIE_OPTION = {
 };
 
 export const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
+
+export const WEB_LANGUAGE = [
+  { identifier: "en", name: "English" },
+  { identifier: "hindi", name: "Hindi" },
+  { identifier: "spanish", name: "Spanish" },
+];

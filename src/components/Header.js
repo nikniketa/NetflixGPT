@@ -4,12 +4,14 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
-import { LOGO } from "../utils/constants";
+import { LOGO, WEB_LANGUAGE } from "../utils/constants";
 import { toggleGPTView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
+  const gptView = useSelector((store) => store.gpt.gptView);
   const dispatch = useDispatch();
   useEffect(() => {
     handleGPTView();
@@ -43,16 +45,29 @@ const Header = () => {
         console.log(error);
       });
   };
+  const handleLanguage = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
   return (
     <div className="w-full px-32 z-10 fixed">
       <img className="w-52 shadow-black float-left" src={LOGO} alt="logo" />
       {user && (
         <div className=" flex float-right mt-5">
+          {gptView && (
+            <select
+              onChange={(e) => handleLanguage(e)}
+              className="text-white bg-black mr-3"
+            >
+              {WEB_LANGUAGE.map((lang) => (
+                <option value={lang.identifier}>{lang.name}</option>
+              ))}
+            </select>
+          )}
           <button
             className="bg-green-700 text-white p-2 mr-2 rounded"
             onClick={handleGPTView}
           >
-            GPT Search
+            {gptView ? "Home" : "GPT Search"}
           </button>
           <img
             alt="netflix-profile"

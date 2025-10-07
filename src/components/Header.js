@@ -59,7 +59,9 @@ const Header = () => {
               className="text-white bg-black mr-3"
             >
               {WEB_LANGUAGE.map((lang) => (
-                <option value={lang.identifier}>{lang.name}</option>
+                <option value={lang.identifier} key={lang.identifier}>
+                  {lang.name}
+                </option>
               ))}
             </select>
           )}

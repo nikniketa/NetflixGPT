@@ -34,7 +34,6 @@ const Browse = () => {
     addTopRatedMovie
   );
   const gptscreen = useSelector((store) => store.gpt.gptView);
-  console.log(gptscreen);
 
   return (
     <>

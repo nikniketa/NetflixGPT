@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { MOVIE_OPTION } from "../utils/constants";
 import { useDispatch } from "react-redux";
 
-const useNowMoviePlaying = (link, func) => {
+const useNowMoviePlaying = (link, func, data) => {
   const dispatch = useDispatch();
   const getNowMovieData = async () => {
     const movies = await fetch(link, MOVIE_OPTION);
@@ -11,7 +11,7 @@ const useNowMoviePlaying = (link, func) => {
     dispatch(func(res.results));
   };
   useEffect(() => {
-    getNowMovieData();
+    data.length === 0 && getNowMovieData();
   }, []);
 };
 

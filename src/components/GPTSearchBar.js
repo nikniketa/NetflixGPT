@@ -1,28 +1,53 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LANG from "../utils/languageConstant";
-import client from "./openai";
-import ai from "./openai";
+import ai from "../utils/openai";
+import { MOVIE_OPTION } from "../utils/constants";
+import { gptMovieSearchResult } from "../utils/gptSlice";
 
 const GPTSearchBar = () => {
   const searchLang = useSelector((store) => store.config.lang);
+  const dispatch = useDispatch();
   const searchInput = useRef(null);
+  const searchfromTMDB = async (movie) => {
+    const response = await fetch(
+      "https://api.themoviedb.org/3/search/movie?query=" +
+        movie +
+        "&include_adult=false&language=en-US&page=1'",
+      MOVIE_OPTION,
+    );
+    const json = await response.json();
+
+    return json.results;
+  };
   const handleGPTSearchClick = async () => {
-    console.log(searchInput.current.value);
     const content =
-      "find the 5 movie list with query:" +
+      "Act as a movie recommendation system and suggest some movie for the query :" +
       searchInput.current.value +
-      " and show the result in string coma seperated";
+      ". if exact moonly give name of 5 movies, comma seperated like the example given ahead. example: Don, golmaaal, Masti, etc";
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: content,
     });
-    console.log(response.text);
+    const moviesArray = response.text.split(",");
+
+    const promiseArray =
+      moviesArray &&
+      moviesArray.map((movie) => {
+        return searchfromTMDB(movie);
+      });
+    const tmdbResult = await Promise.all(promiseArray);
+    dispatch(
+      gptMovieSearchResult({
+        moviesName: moviesArray,
+        movieResult: tmdbResult,
+      }),
+    );
   };
   return (
-    <div className="mt-[10%] flex justify-center z-10 w-1/2">
+    <div className="mt-[10%] mb-5 flex justify-center items-center z-10">
       <form
-        className="bg-black p-2 grid w-full col-span-12 grid-flow-col"
+        className="bg-black p-2 grid col-span-12 grid-flow-col w-1/2"
         onSubmit={(e) => e.preventDefault()}
       >
         <input

@@ -3,6 +3,7 @@ import MovieCard from "./MovieCard";
 
 const MovieList = ({ title, movies }) => {
   if (!movies) return null;
+
   return (
     <div className="pl-6">
       <div className="pl-6">
@@ -11,7 +12,11 @@ const MovieList = ({ title, movies }) => {
       <div className="flex overflow-x-scroll">
         <div className="flex ">
           {movies.map((movie) => {
-            return <MovieCard key={movie.id} image={movie.poster_path} />;
+            return (
+              movie.poster_path && (
+                <MovieCard key={movie.id} image={movie.poster_path} />
+              )
+            );
           })}
         </div>
       </div>

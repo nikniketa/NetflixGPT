@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 import { LOGO, WEB_LANGUAGE } from "../utils/constants";
-import { toggleGPTView } from "../utils/gptSlice";
+import { gptMovieSearchResult, toggleGPTView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
@@ -24,7 +24,7 @@ const Header = () => {
             email: email,
             displayName: displayName,
             photoURL: photoURL,
-          })
+          }),
         );
         navigate("/browse");
       } else {
@@ -37,6 +37,12 @@ const Header = () => {
   }, []);
   const handleGPTView = () => {
     dispatch(toggleGPTView());
+    dispatch(
+      gptMovieSearchResult({
+        moviesName: null,
+        movieResult: null,
+      }),
+    );
   };
   const onSignOutHandler = () => {
     signOut(auth)

@@ -6,11 +6,13 @@ import { BANNER_LOGIN } from "../utils/constants";
 const GPTSearch = () => {
   return (
     <div className="flex justify-center w-full">
-      <div className="absolute">
-        <img src={BANNER_LOGIN} />
+      <div className="fixed">
+        <img alt="Banner" src={BANNER_LOGIN} />
       </div>
-      <GPTSearchBar />
-      <GPTSearchSuggetions />
+      <div className="z-[1] w-full flex flex-col ">
+        <GPTSearchBar />
+        <GPTSearchSuggetions />
+      </div>
     </div>
   );
 };

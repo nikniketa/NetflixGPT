@@ -12,7 +12,7 @@ const GPTSearchSuggetions = () => {
         <div className="bg-black/90 mt-5">No Movie Found</div>
       )}
       {gptMovieName.map((name, i) => (
-        <div key={name} className="bg-black/90 pt-6 mx-5">
+        <div key={name} className="bg-black/90 pt-6 md:mx-5 mx-0">
           <MovieList title={name} movies={gptMovies[i]} />
         </div>
       ))}

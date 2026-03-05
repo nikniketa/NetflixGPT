@@ -55,7 +55,7 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   };
   return (
-    <div className="w-full px-32 z-10 fixed">
+    <div className="w-full px-32 z-10 md:fixed relative">
       <img className="w-52 shadow-black float-left" src={LOGO} alt="logo" />
       {user && (
         <div className=" flex float-right mt-5">

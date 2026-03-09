@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LANG from "../utils/languageConstant";
 import ai from "../utils/openai";
@@ -6,6 +6,7 @@ import { MOVIE_OPTION } from "../utils/constants";
 import { gptMovieSearchResult } from "../utils/gptSlice";
 
 const GPTSearchBar = () => {
+  const [isLoading, setIsLoading] = useState("");
   const searchLang = useSelector((store) => store.config.lang);
   const dispatch = useDispatch();
   const searchInput = useRef(null);
@@ -21,10 +22,20 @@ const GPTSearchBar = () => {
     return json.results;
   };
   const handleGPTSearchClick = async () => {
-    const content =
-      "Act as a movie recommendation system and suggest some movie for the query :" +
-      searchInput.current.value +
-      ". if exact moonly give name of 5 movies, comma seperated like the example given ahead. example: Don, golmaaal, Masti, etc";
+    setIsLoading("Loading... Please wait");
+    const content = `Act as a movie search and recommendation system.
+
+User input: "${searchInput.current.value}"
+
+Rules:
+1. If the user input is an exact movie name, return that movie name only.
+2. If the user input is a genre, mood, actor, or query, recommend 5 relevant movies.
+3. Return only movie names separated by commas.
+4. Do not include explanations.
+
+Example output:
+Don, Golmaal, Masti, Hera Pheri, Dhol
+`;
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: content,
@@ -43,6 +54,7 @@ const GPTSearchBar = () => {
         movieResult: tmdbResult,
       }),
     );
+    setIsLoading("");
   };
   return (
     <div className="mt-[10%] mb-5 flex justify-center items-center z-10">
@@ -63,6 +75,11 @@ const GPTSearchBar = () => {
           {LANG[searchLang].search}
         </button>
       </form>
+      {isLoading && (
+        <div className="w-3/4 bg-black/90 text-white absolute top-1/2 p-5 text-xl">
+          {isLoading}
+        </div>
+      )}
     </div>
   );
 };

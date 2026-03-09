@@ -44,6 +44,9 @@
  - Memoization
  - added .env file to gitignore
  - Made our site responsive 
+ - created single video page
+ - dynamic redirection depending on clicking on movie card
+ - Movie trialer will show on single video page
  
 
  # Features

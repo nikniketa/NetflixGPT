@@ -14,7 +14,7 @@ const MainContainer = () => {
     <div className="relative bg-black">
       <VideoBackground movie_id={id} />
 
-      <VideoTitle title={original_title} overview={overview} />
+      <VideoTitle movie_id={id} title={original_title} overview={overview} />
     </div>
   );
 };

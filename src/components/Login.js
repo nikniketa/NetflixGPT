@@ -18,11 +18,10 @@ const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
   const dispatch = useDispatch();
+
   const handleSubmitForm = () => {
     const emailValue = email.current.value;
     const passwordValue = password.current.value;
-
-    console.log(emailValue);
 
     const message = checkFormValidation(emailValue, passwordValue);
     setErrorMsg(message);
@@ -32,12 +31,10 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMsg(errorCode + "-" + errorMessage);
+          console.log(error);
+          setErrorMsg("Invalid Credential");
         });
     } else {
       createUserWithEmailAndPassword(auth, emailValue, passwordValue)
@@ -56,19 +53,19 @@ const Login = () => {
                   email: email,
                   displayName: displayName,
                   photoURL: photoURL,
-                })
+                }),
               );
             })
             .catch((error) => {
               console.log(error);
             });
-          console.log(user);
         })
         .catch((error) => {
-          const errorCode = error.code;
+          //const errorCode = error.code;
           const errorMessage = error.message;
+          console.log(error);
 
-          setErrorMsg(errorCode + "-" + errorMessage);
+          setErrorMsg(errorMessage);
         });
     }
   };
@@ -84,7 +81,7 @@ const Login = () => {
       <Header />
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="w-4/12 bg-black bg-opacity-70 m-auto px-20 py-14 mt-24 z-10 relative shadow-2xl shadow-black "
+        className="w-full md:w-4/12 bg-black bg-opacity-70 m-auto px-20 py-14 mt-24 z-10 relative shadow-2xl shadow-black "
       >
         <h1 className="text-4xl font-bold text-white mb-3">
           {isRegistered ? "Sign In" : "Sign Up"}
@@ -99,7 +96,7 @@ const Login = () => {
         )}
         <input
           type="text"
-          placeholder="Email or mobile number"
+          placeholder="Email Id"
           ref={email}
           className="border-[1px] text-white w-full mt-4 p-3 rounded-md bg-black"
         />
